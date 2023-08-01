@@ -5,7 +5,7 @@ import { First } from "../components/welcome/first";
 import { Second } from "../components/welcome/second";
 import { Third } from "../components/welcome/third";
 import { Forth } from "../components/welcome/forth";
-import { welcome } from "../views/welcome";
+import { welcome } from "../views/Welcome";
 
 
 export const routes: RouteRecordRaw[] = [
