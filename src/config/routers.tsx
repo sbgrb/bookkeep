@@ -11,13 +11,14 @@ import { ForthActions } from "../components/welcome/ForthActions";
 import { Start } from "../views/Start";
 
 export const routes: RouteRecordRaw[] = [
-    { path: '/', redirect: '/welcome/1' },
+    { path: '/', redirect: '/welcome' },
     {
         path: '/welcome', component: welcome, children: [
-            { path: '1', components: { main: First, footer: FirstActions } },
-            { path: '2', components: { main: Second, footer: SecondActions } },
-            { path: '3', components: { main: Third, footer: ThirdActions } },
-            { path: '4', components: { main: Forth, footer: ForthActions } },
+            { path: '', redirect: '/welcome/1' },
+            { path: '1', name: 'welcome1', components: { main: First, footer: FirstActions } },
+            { path: '2', name: 'welcome2', components: { main: Second, footer: SecondActions } },
+            { path: '3', name: 'welcome3', components: { main: Third, footer: ThirdActions } },
+            { path: '4', name: 'welcome4', components: { main: Forth, footer: ForthActions } },
         ]
     },
     { path: '/start', component: Start }
