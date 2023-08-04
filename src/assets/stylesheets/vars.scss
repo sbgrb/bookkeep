@@ -1,9 +1,14 @@
 :root {
-    --welcome-card-bg: white;
-    --welcome-text: white;
-    --welcome-bg-start: #5d33be;
-    --welcome-bg-end: #8f4cd7;
-    --welcome-nav-height: 64px;
-    --welcome-nav-gap: 8px;
-    --z-index-bottom-nav: 10; 
-  }
+  --welcome-card-bg: white;
+  --welcome-text: white;
+  --welcome-bg-start: #5d33be;
+  --welcome-bg-end: #8f4cd7;
+  --welcome-nav-height: 64px;
+  --welcome-nav-gap: 8px;
+  --z-index-bottom-nav: 10;
+  --button-bg: #5C33BE;
+  --button-radius: 4px;
+  --button-font-color: white;
+  --button-font-size: 18px;
+  --button-height: 48px;
+}
