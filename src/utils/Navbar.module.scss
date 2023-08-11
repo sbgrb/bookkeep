@@ -1,0 +1,25 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 16px 12px;
+    color: white;
+    font-size: 24px;
+    fill: white;
+    background: linear-gradient(to bottom, var(--navbar-bg-start) 0%, var(--navbar-bg-end) 100%);
+
+    svg {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+.icon_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title_wrapper {
+    margin-left: 16px;
+}
