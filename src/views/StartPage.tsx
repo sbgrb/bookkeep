@@ -4,28 +4,29 @@ import s from './StartPgae.module.scss';
 import { FloatButton } from "../utils/FloatButton";
 import { Center } from "../utils/Center";
 import { Navbar } from "../utils/Navbar";
+import { Overlay } from "../utils/Overlay";
+import { Icon } from "../utils/Icon";
 export const StartPage = defineComponent({
     setup() {
+        const refOverlayVisiable = ref(false)
         const onclick = () => {
-            console.log('hi')
+            refOverlayVisiable.value = !refOverlayVisiable.value
         }
         return () => <div>
             <Navbar>
                 {{
-                    default: '记账', icon: <svg>
-                        <use xlinkHref='#menu'></use>
-                    </svg>
+                    default: () => '记账',
+                    icon: () => <Icon name="menu" onClick={onclick} />
                 }}
             </Navbar>
             <Center class={s.pig_wrapper}>
-                <svg>
-                    <use xlinkHref='#pig'></use>
-                </svg>
+                <Icon name="pig" class={s.pig} />
             </Center>
             <div class={s.button_wrapper}>
-                <Button class={s.button} onClick={onclick}>开始记账</Button>
+                <Button class={s.button}>开始记账</Button>
             </div>
             <FloatButton iconName="add" />
+            {refOverlayVisiable.value && <Overlay onClose={() => refOverlayVisiable.value = false} />}
         </div>
     }
 })
