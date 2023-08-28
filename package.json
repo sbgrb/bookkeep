@@ -9,15 +9,17 @@
   },
   "dependencies": {
     "sass": "^1.64.2",
+    "vant": "^4.6.6",
     "vue": "3.2.31",
     "vue-router": "4.0.14"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "3.0.0",
     "@vitejs/plugin-vue-jsx": "2.0.0",
-    "typescript": "4.6.3",
     "svgo": "2.8.0",
     "svgstore": "3.0.1",
+    "typescript": "4.6.3",
+    "unplugin-vue-components": "^0.25.1",
     "vite": "3.0.0",
     "vue-tsc": "0.29.8"
   }
