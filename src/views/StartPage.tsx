@@ -4,21 +4,17 @@ import s from './StartPgae.module.scss';
 import { FloatButton } from "../utils/FloatButton";
 import { Center } from "../utils/Center";
 import { Navbar } from "../utils/Navbar";
-import { Overlay } from "../utils/Overlay";
+import { OverlayIcon } from "../utils/Overlay";
 import { Icon } from "../utils/Icon";
 import { RouterLink } from "vue-router";
-import { MainLayout } from "../layouts/mainLayout";
+import { MainLayout } from "../layouts/MainLayout";
 export const StartPage = defineComponent({
     setup() {
-        const refOverlayVisiable = ref(false)
-        const onclick = () => {
-            refOverlayVisiable.value = !refOverlayVisiable.value
-        }
         return () =>
             <MainLayout>
                 {{
                     title: () => '记账',
-                    icon: () => <Icon name="menu" onClick={onclick} />,
+                    icon: () => <OverlayIcon />,
                     default: () => <>
                         <Center class={s.pig_wrapper}>
                             <Icon name="pig" class={s.pig} />
@@ -31,7 +27,6 @@ export const StartPage = defineComponent({
                         <RouterLink to="/items/create">
                             <FloatButton iconName="add" />
                         </RouterLink>
-                        {refOverlayVisiable.value && <Overlay onClose={() => refOverlayVisiable.value = false} />}
                     </>
                 }}
             </MainLayout>

@@ -1,12 +1,13 @@
 import { defineComponent, reactive, ref,watchEffect } from "vue";
 import s from './ItemList.module.scss';
 import { Overlay } from 'vant';
-import { MainLayout } from "../../layouts/mainLayout";
+import { MainLayout } from "../../layouts/MainLayout";
 import { Icon } from "../../utils/Icon";
 import { Tabs,Tab } from "../../utils/Tabs";
 import { Time } from "../../utils/time";
 import { ItemSummary } from "./ItemSummary";
 import { Form,FormItem } from "../../utils/Form";
+import { OverlayIcon } from "../../utils/Overlay";
 export const ItemList = defineComponent({
     setup: (props, context) => {
         const refSelected = ref('本月')
@@ -15,15 +16,15 @@ export const ItemList = defineComponent({
           e.preventDefault()
           refOverlayVisible.value = false
         }
+        const onSelect = (value: string) => {
+          if (value === '自定义时间') {
+            refOverlayVisible.value = true
+          }
+        }
         const time = new Time()
         const customTime = reactive({
           start: new Time().format(),
           end: new Time().format()
-        })
-        watchEffect(() => {
-          if (refSelected.value === '自定义时间') {
-            refOverlayVisible.value = true
-          }
         })
         const timeList = [
           {
@@ -43,9 +44,10 @@ export const ItemList = defineComponent({
             <MainLayout>
                 {{
                     title: () => '记账',
-                    icon: () => <Icon name="menu" />,
+                    icon: () => <OverlayIcon />,
                     default: () => <>
-                        <Tabs classPrefix={'customTabs'} v-model:selected={refSelected.value}>
+                        <Tabs classPrefix={'customTabs'} v-model:selected={refSelected.value}
+                          onUpdate:selected={onSelect}>
                           <Tab name="本月">
                             <ItemSummary startDate={timeList[0].start.format()} endDate={timeList[0].end.format()} />
                           </Tab>
@@ -69,10 +71,10 @@ export const ItemList = defineComponent({
                                 <FormItem label='开始时间' v-model={customTime.start} type='date' />
                                 <FormItem label='结束时间' v-model={customTime.end} type='date' />
                                 <FormItem>
-                                <div class={s.actions}>
-                                  <button type="button">取消</button>
-                                  <button type="submit">确认</button>
-                                </div>
+                                  <div class={s.actions}>
+                                    <button type="button" onClick={() => refOverlayVisible.value = false}>取消</button>
+                                    <button type="submit">确认</button>
+                                  </div>
                               </FormItem>
                               </Form>
                             </main>

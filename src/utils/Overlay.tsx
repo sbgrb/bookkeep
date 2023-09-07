@@ -26,17 +26,17 @@ export const Overlay = defineComponent({
                         <ul>
                             <li>
                                 <RouterLink to="/statistics" class={s.action}>
-                                    <Icon name="charts" /><span>统计图表</span>
+                                    <Icon name="charts" class={s.icon} /><span>统计图表</span>
                                 </RouterLink>
                             </li>
                             <li>
                                 <RouterLink to="/statistics" class={s.action}>
-                                    <Icon name="export" /><span>导出数据</span>
+                                    <Icon name="export" class={s.icon} /><span>导出数据</span>
                                 </RouterLink>
                             </li>
                             <li>
                                 <RouterLink to="/statistics" class={s.action}>
-                                    <Icon name="notify" /><span>记账提醒</span>
+                                    <Icon name="notify" class={s.icon} /><span>记账提醒</span>
                                 </RouterLink>
                             </li>
                         </ul>
@@ -44,5 +44,18 @@ export const Overlay = defineComponent({
                 </div>
             </>
         )
+    }
+})
+
+export const OverlayIcon = defineComponent({
+    setup: (props, context) => {
+        const refOverlayVisiable = ref(false)
+        const onclick = () => {
+            refOverlayVisiable.value = !refOverlayVisiable.value
+        }
+        return () => <>
+            <Icon name="menu" onClick={onclick} />
+            {refOverlayVisiable.value && <Overlay onClose={() => refOverlayVisiable.value = false} />}
+        </>
     }
 })

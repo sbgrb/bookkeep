@@ -1,5 +1,6 @@
 :root {
   --amount-text: #53A867;
+  --text: #333;
   --bg: white;
   --button-bg-danger: #E10505;
   --button-bg: #5C33BE;
@@ -48,4 +49,6 @@
   --welcome-text: white;
   --z-index-bottom-nav: 8;
   --z-index-overlay: 16;
+  --z-index-navbar: 32;
+  --van-overlay-z-index: 64;
 }
