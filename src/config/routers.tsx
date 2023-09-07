@@ -15,9 +15,11 @@ import { ItemCreate } from "../components/item/ItemCreate";
 import { TagPage } from "../views/TagPage";
 import { TagCreate } from "../components/tag/TagCreate";
 import { TagEdit } from "../components/tag/TagEdit";
+import { SignInPage } from "../views/SignInPage";
 
 export const routes: RouteRecordRaw[] = [
     { path: '/', redirect: '/welcome' },
+    { path: '/sign_in', component: SignInPage },
     {
         path: '/welcome', component: welcome, children: [
             { path: '', redirect: '/welcome/1' },
