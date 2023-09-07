@@ -1,4 +1,4 @@
-import { defineComponent, PropType, reactive } from 'vue';
+import { defineComponent, PropType, reactive, ref } from 'vue';
 import { MainLayout } from '../layouts/MainLayout';
 import { Button } from '../utils/Button';
 import { Form, FormItem } from '../utils/Form';
@@ -7,6 +7,7 @@ import { validate } from '../utils/validata';
 import s from './SignInPage.module.scss';
 export const SignInPage = defineComponent({
     setup: (props, context) => {
+        const validationCode = ref()
         const formData = reactive({
             email: '',
             code: ''
@@ -26,6 +27,9 @@ export const SignInPage = defineComponent({
                 { key: 'code', type: 'required', message: '必填' },
             ]))
         }
+        const onClickSendValidationCode = () => {
+            validationCode.value.countDown()
+        }
         return () => (
             <MainLayout>{
                 {
@@ -41,8 +45,10 @@ export const SignInPage = defineComponent({
                                 <FormItem label="邮箱地址" type="text"
                                     placeholder='请输入邮箱，然后点击发送验证码'
                                     v-model={formData.email} error={errors.email?.[0]} />
-                                <FormItem label="验证码" type="validationCode"
+                                <FormItem ref={validationCode} label="验证码" type="validationCode"
                                     placeholder='请输入六位数字'
+                                    countFrom={3}
+                                    onClick={onClickSendValidationCode}
                                     v-model={formData.code} error={errors.code?.[0]} />
                                 <FormItem style={{ paddingTop: '96px' }}>
                                     <Button>登录</Button>
