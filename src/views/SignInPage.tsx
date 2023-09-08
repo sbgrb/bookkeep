@@ -8,6 +8,7 @@ import s from './SignInPage.module.scss';
 import { http } from '../utils/Http';
 import { useBool } from '../hooks/useBool';
 import { useRoute, useRouter } from 'vue-router';
+import { refreshMe } from '../utils/fetchMe';
 export const SignInPage = defineComponent({
     setup: (props, context) => {
         const validationCode = ref()
@@ -35,6 +36,7 @@ export const SignInPage = defineComponent({
                 const response = await http.post<{ jwt: string }>('/session', formData)
                 localStorage.setItem('jwt', response.data.jwt)
                 const returnTo = route.query.return_to?.toString()
+                refreshMe()
                 router.push(returnTo || '/')
             }
         }
@@ -62,7 +64,6 @@ export const SignInPage = defineComponent({
                                 <Icon class={s.icon} name="mangosteen" />
                                 <h1 class={s.appName}>记账</h1>
                             </div>
-                            <van-button>你好</van-button>
                             <Form onSubmit={onSubmit}>
                                 <FormItem label="邮箱地址" type="text"
                                     placeholder='请输入邮箱，然后点击发送验证码'
