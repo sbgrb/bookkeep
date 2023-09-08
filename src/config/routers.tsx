@@ -22,7 +22,11 @@ export const routes: RouteRecordRaw[] = [
     { path: '/', redirect: '/welcome' },
     { path: '/sign_in', component: SignInPage },
     {
-        path: '/welcome', component: welcome, children: [
+        path: '/welcome', component: welcome,
+        beforeEnter: (to, from, next) => {
+            localStorage.getItem('skipFeatures') === 'yes' ? next('/start') : next()
+        },
+        children: [
             { path: '', redirect: '/welcome/1' },
             { path: '1', name: 'welcome1', components: { main: First, footer: FirstActions } },
             { path: '2', name: 'welcome2', components: { main: Second, footer: SecondActions } },

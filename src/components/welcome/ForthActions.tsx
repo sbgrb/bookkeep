@@ -1,10 +1,11 @@
+import { SkipFeatures } from '../../utils/SkipFeatures';
 import s from './WelcomeLayout.module.scss';
 import { RouterLink } from 'vue-router';
 export const ForthActions = () => (
     <div class={s.actions}>
-        <RouterLink class={s.fake} to="/start" >跳过</RouterLink>
+        <SkipFeatures class={s.fake} />
         <RouterLink to="/start" >完成</RouterLink>
-        <RouterLink class={s.fake} to="/start" >跳过</RouterLink>
+        <SkipFeatures class={s.fake} />
     </div>
 )
 

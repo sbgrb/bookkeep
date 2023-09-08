@@ -7,7 +7,7 @@ import { validate, hasError } from '../utils/validata';
 import s from './SignInPage.module.scss';
 import { http } from '../utils/Http';
 import { useBool } from '../hooks/useBool';
-import { history } from '../utils/history';
+import { useRoute, useRouter } from 'vue-router';
 export const SignInPage = defineComponent({
     setup: (props, context) => {
         const validationCode = ref()
@@ -19,6 +19,8 @@ export const SignInPage = defineComponent({
             email: [],
             code: []
         })
+        const router = useRouter()
+        const route = useRoute()
         const onSubmit = async (e: Event) => {
             e.preventDefault()
             Object.assign(errors, {
@@ -32,7 +34,8 @@ export const SignInPage = defineComponent({
             if (!hasError(errors)) {
                 const response = await http.post<{ jwt: string }>('/session', formData)
                 localStorage.setItem('jwt', response.data.jwt)
-                history.push('/')
+                const returnTo = route.query.return_to?.toString()
+                router.push(returnTo || '/')
             }
         }
         const { ref: refDisabled, on: disabled, off: enable } = useBool(false)
@@ -59,6 +62,7 @@ export const SignInPage = defineComponent({
                                 <Icon class={s.icon} name="mangosteen" />
                                 <h1 class={s.appName}>记账</h1>
                             </div>
+                            <van-button>你好</van-button>
                             <Form onSubmit={onSubmit}>
                                 <FormItem label="邮箱地址" type="text"
                                     placeholder='请输入邮箱，然后点击发送验证码'

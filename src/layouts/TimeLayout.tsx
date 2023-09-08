@@ -4,7 +4,6 @@ import { Overlay } from 'vant';
 import { MainLayout } from "./MainLayout";
 import { Tabs,Tab } from "../utils/Tabs";
 import { Time } from "../utils/time";
-import { ItemSummary } from "./../components/item/ItemSummary";
 import { Form,FormItem } from "../utils/Form";
 import { OverlayIcon } from "../utils/Overlay";
 const demo = defineComponent({
