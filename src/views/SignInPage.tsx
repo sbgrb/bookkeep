@@ -5,11 +5,12 @@ import { Form, FormItem } from '../utils/Form';
 import { Icon } from '../utils/Icon';
 import { validate } from '../utils/validata';
 import s from './SignInPage.module.scss';
+import { http } from '../utils/Http';
 export const SignInPage = defineComponent({
     setup: (props, context) => {
         const validationCode = ref()
         const formData = reactive({
-            email: '',
+            email: '974487599@qq.com',
             code: ''
         })
         const errors = reactive({
@@ -27,7 +28,14 @@ export const SignInPage = defineComponent({
                 { key: 'code', type: 'required', message: '必填' },
             ]))
         }
-        const onClickSendValidationCode = () => {
+        const onError = (error: any) => {
+            if (error.response.status === 422) {
+                Object.assign(errors, error.response.data.errors)
+            }
+            throw error
+        }
+        const onClickSendValidationCode = async () => {
+            const response = await http.post('/validation_codes', { email: formData.email }).catch(onError)
             validationCode.value.countDown()
         }
         return () => (
