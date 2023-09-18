@@ -1,4 +1,4 @@
-import { PropType, defineComponent, ref } from "vue";
+import { defineComponent, PropType } from "vue";
 import s from "./Tabs.module.scss";
 export const Tabs = defineComponent({
   props: {
@@ -7,6 +7,7 @@ export const Tabs = defineComponent({
     },
     selected: {
       type: String as PropType<string>,
+      required: false,
     },
     rerenderOnSelect: {
       type: Boolean as PropType<boolean>,
@@ -15,7 +16,6 @@ export const Tabs = defineComponent({
   },
   emits: ["update:selected"],
   setup: (props, context) => {
-    const cp = props.classPrefix;
     return () => {
       const Tabs = context.slots.default?.();
       if (!Tabs) return () => null;
@@ -24,26 +24,37 @@ export const Tabs = defineComponent({
           throw new Error("<Tabs> only accepts <Tab> as children");
         }
       }
+      const cp = props.classPrefix || "aabb";
       return (
         <div class={[s.tabs, cp + "_tabs"]}>
           <ol class={[s.tabs_nav, cp + "_tabs_nav"]}>
             {Tabs.map((item) => (
               <li
                 class={[
-                  item.props?.name === props.selected
+                  item.props?.value === props.selected
                     ? [s.selected, cp + "_selected"]
                     : "",
                   cp + "_tabs_nav_item",
                 ]}
                 onClick={() =>
-                  context.emit("update:selected", item.props?.name)
+                  context.emit("update:selected", item.props?.value)
                 }
               >
                 {item.props?.name}
               </li>
             ))}
           </ol>
-          <div>{Tabs.find((item) => item.props?.name === props.selected)}</div>
+          {props.rerenderOnSelect ? (
+            <div key={props.selected}>
+              {Tabs.find((item) => item.props?.value === props.selected)}
+            </div>
+          ) : (
+            <div>
+              {Tabs.map((item) => (
+                <div v-show={item.props?.value === props.selected}>{item}</div>
+              ))}
+            </div>
+          )}
         </div>
       );
     };
@@ -54,6 +65,7 @@ export const Tab = defineComponent({
   props: {
     name: {
       type: String as PropType<string>,
+      required: true,
     },
     value: {
       type: String as PropType<string>,
