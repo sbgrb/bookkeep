@@ -186,6 +186,16 @@ export const mockSession: Mock = (config) => {
   ];
 };
 
+export const mockUser: Mock = (config) => {
+  return [
+    200,
+    {
+      email: faker.internet.email(),
+      id: createId(),
+    },
+  ];
+};
+
 let id = 0;
 const createId = () => {
   id += 1;

@@ -17,7 +17,7 @@ export const useMeStore = defineStore<string, MeState, {}, MeActions>("me", {
   }),
   actions: {
     refreshMe() {
-      this.mePromise = http.get<Resource<User>>("/me");
+      this.mePromise = http.get<Resource<User>>("/me", {}, { _mock: "user" });
     },
     fetchMe() {
       this.refreshMe();

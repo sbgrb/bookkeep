@@ -9,8 +9,11 @@ import { http } from "../utils/Http";
 import { useBool } from "../hooks/useBool";
 import { useRoute, useRouter } from "vue-router";
 import { refreshMe } from "../utils/fetchMe";
+import { useMeStore } from "../stores/useMeStore";
+import { BackIcon } from "../utils/BackIcon";
 export const SignInPage = defineComponent({
   setup: (props, context) => {
+    const meStore = useMeStore();
     const validationCode = ref();
     const formData = reactive({
       email: "974487599@qq.com",
@@ -44,12 +47,13 @@ export const SignInPage = defineComponent({
       if (!hasError(errors)) {
         const response = await http
           .post<{ jwt: string }>("/session", formData, {
-            params: { _mock: "session" },
+            _autoLoading: true,
+            _mock: "session",
           })
           .catch(onError);
         localStorage.setItem("jwt", response.data.jwt);
         const returnTo = route.query.return_to?.toString();
-        refreshMe();
+        meStore.refreshMe();
         router.push(returnTo || "/");
       }
     };
@@ -72,7 +76,7 @@ export const SignInPage = defineComponent({
       <MainLayout>
         {{
           title: () => "登录",
-          icon: () => <Icon name="left" />,
+          icon: () => <BackIcon />,
           default: () => (
             <div class={s.wrapper}>
               <div class={s.logo}>
