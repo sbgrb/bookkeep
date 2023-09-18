@@ -1,102 +1,108 @@
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive } from "vue";
 import s from "./ItemCreate.module.scss";
 import { MainLayout } from "../../layouts/MainLayout";
 import { Icon } from "../../utils/Icon";
 import { Tabs, Tab } from "../../utils/Tabs";
 import { InputPad } from "./InputPad";
+import { Tags } from "./Tags";
+import { useRouter } from "vue-router";
+import { AxiosError } from "axios";
+import { Dialog } from "vant";
+import { http } from "../../utils/Http";
+import { hasError, validate } from "../../utils/validata";
+import { BackIcon } from "../../utils/BackIcon";
 export const ItemCreate = defineComponent({
   setup: (props, context) => {
-    const refKind = ref("支出");
-    const refPage = ref(0);
-    const refHasMore = ref(false);
-    const refExpensesTags = ref([
-      { id: 1, name: "餐费", sign: "￥", category: "expenses" },
-      { id: 2, name: "打车", sign: "￥", category: "expenses" },
-      { id: 3, name: "聚餐", sign: "￥", category: "expenses" },
-      { id: 4, name: "打车", sign: "￥", category: "expenses" },
-      { id: 5, name: "聚餐", sign: "￥", category: "expenses" },
-      { id: 6, name: "打车", sign: "￥", category: "expenses" },
-      { id: 7, name: "聚餐", sign: "￥", category: "expenses" },
-    ]);
-    const refIncomeTags = ref([
-      { id: 4, name: "工资", sign: "￥", category: "income" },
-      { id: 5, name: "彩票", sign: "￥", category: "income" },
-      { id: 6, name: "滴滴", sign: "￥", category: "income" },
-      { id: 11, name: "彩票", sign: "￥", category: "income" },
-      { id: 18, name: "滴滴", sign: "￥", category: "income" },
-      { id: 17, name: "彩票", sign: "￥", category: "income" },
-      { id: 19, name: "滴滴", sign: "￥", category: "income" },
-      { id: 4, name: "工资", sign: "￥", category: "income" },
-      { id: 5, name: "彩票", sign: "￥", category: "income" },
-      { id: 6, name: "滴滴", sign: "￥", category: "income" },
-      { id: 11, name: "彩票", sign: "￥", category: "income" },
-      { id: 18, name: "滴滴", sign: "￥", category: "income" },
-      { id: 17, name: "彩票", sign: "￥", category: "income" },
-      { id: 19, name: "滴滴", sign: "￥", category: "income" },
-      { id: 4, name: "工资", sign: "￥", category: "income" },
-      { id: 5, name: "彩票", sign: "￥", category: "income" },
-      { id: 6, name: "滴滴", sign: "￥", category: "income" },
-      { id: 11, name: "彩票", sign: "￥", category: "income" },
-      { id: 18, name: "滴滴", sign: "￥", category: "income" },
-      { id: 17, name: "彩票", sign: "￥", category: "income" },
-      { id: 19, name: "滴滴", sign: "￥", category: "income" },
-      { id: 4, name: "工资", sign: "￥", category: "income" },
-      { id: 5, name: "彩票", sign: "￥", category: "income" },
-      { id: 6, name: "滴滴", sign: "￥", category: "income" },
-      { id: 11, name: "彩票", sign: "￥", category: "income" },
-      { id: 18, name: "滴滴", sign: "￥", category: "income" },
-      { id: 17, name: "彩票", sign: "￥", category: "income" },
-      { id: 19, name: "滴滴", sign: "￥", category: "income" },
-      { id: 4, name: "工资", sign: "￥", category: "income" },
-      { id: 5, name: "彩票", sign: "￥", category: "income" },
-      { id: 6, name: "滴滴", sign: "￥", category: "income" },
-      { id: 11, name: "彩票", sign: "￥", category: "income" },
-      { id: 18, name: "滴滴", sign: "￥", category: "income" },
-      { id: 17, name: "彩票", sign: "￥", category: "income" },
-      { id: 19, name: "滴滴", sign: "￥", category: "income" },
-    ]);
-    const onclick = () => {};
+    const formData = reactive<Partial<Item>>({
+      kind: "expenses",
+      tag_ids: [],
+      amount: 0,
+      happen_at: new Date().toISOString(),
+    });
+    const errors = reactive<FormErrors<typeof formData>>({
+      kind: [],
+      tag_ids: [],
+      amount: [],
+      happen_at: [],
+    });
+    const router = useRouter();
+    const onError = (error: AxiosError<ResourceError>) => {
+      if (error.response?.status === 422) {
+        Dialog.alert({
+          title: "出错",
+          message: Object.values(error.response.data.errors).join("\n"),
+        });
+      }
+      throw error;
+    };
+    const onSubmit = async () => {
+      Object.assign(errors, {
+        kind: [],
+        tag_ids: [],
+        amount: [],
+        happen_at: [],
+      });
+      Object.assign(
+        errors,
+        validate(formData, [
+          { key: "kind", type: "required", message: "类型必填" },
+          { key: "tag_ids", type: "required", message: "标签必填" },
+          { key: "amount", type: "required", message: "金额必填" },
+          {
+            key: "amount",
+            type: "notEqual",
+            value: 0,
+            message: "金额不能为零",
+          },
+          { key: "happen_at", type: "required", message: "时间必填" },
+        ])
+      );
+      if (hasError(errors)) {
+        Dialog.alert({
+          title: "出错",
+          message: Object.values(errors)
+            .filter((i) => i.length > 0)
+            .join("\n"),
+        });
+        return;
+      }
+      await http
+        .post<Resource<Item>>("/items", formData, {
+          _mock: "itemCreate",
+          _autoLoading: true,
+        })
+        .catch(onError);
+      router.push("/items");
+    };
     return () => (
       <>
         <MainLayout class={s.layout}>
           {{
             title: () => "记一笔",
-            icon: () => <Icon name="left" onClick={onclick} />,
+            icon: () => <BackIcon />,
             default: () => (
               <>
                 <div class={s.wrapper}>
-                  <Tabs v-model:selected={refKind.value} class={s.tabs}>
-                    <Tab name="支出" class={s.tags_wrapper}>
-                      <div class={s.tag}>
-                        <div class={s.sign}>
-                          <Icon name="add" class={s.createTag} />
-                        </div>
-                        <div class={s.name}>新增</div>
-                      </div>
-                      {refExpensesTags.value.map((tag) => (
-                        <div class={[s.tag, s.selected]}>
-                          <div class={s.sign}>{tag.sign}</div>
-                          <div class={s.name}>{tag.name}</div>
-                        </div>
-                      ))}
+                  <Tabs v-model:selected={formData.kind} class={s.tabs}>
+                    <Tab value="expenses" name="支出" class={s.tags_wrapper}>
+                      <Tags
+                        kind="expenses"
+                        v-model:selected={formData.tag_ids![0]}
+                      />
                     </Tab>
-                    <Tab name="收入" class={s.tags_wrapper}>
-                      <div class={s.tag}>
-                        <div class={s.sign}>
-                          <Icon name="add" class={s.createTag} />
-                        </div>
-                        <div class={s.name}>新增</div>
-                      </div>
-                      {refIncomeTags.value.map((tag) => (
-                        <div class={[s.tag, s.selected]}>
-                          <div class={s.sign}>{tag.sign}</div>
-                          <div class={s.name}>{tag.name}</div>
-                        </div>
-                      ))}
+                    <Tab value="income" name="收入" class={s.tags_wrapper}>
+                      <Tags
+                        kind="income"
+                        v-model:selected={formData.tag_ids![0]}
+                      />
                     </Tab>
                   </Tabs>
                   <div class={s.inputPad_wrapper}>
-                    <InputPad />
+                    <InputPad
+                      v-model:happenAt={formData.happen_at}
+                      v-model:amount={formData.amount}
+                      onSubmit={onSubmit}
+                    />
                   </div>
                 </div>
               </>
