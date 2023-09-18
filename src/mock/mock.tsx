@@ -85,9 +85,12 @@ export const mockItemIndexBalance: Mock = (config) => {
   return [
     200,
     {
-      expenses: 9900,
-      income: 9900,
-      balance: 0,
+      income: faker.datatype.number({ min: 100, max: 10000 }),
+      expenses: faker.datatype.number({
+        min: 100,
+        max: 10000,
+      }),
+      balance: faker.datatype.number(),
     },
   ];
 };
@@ -124,9 +127,9 @@ export const mockItemIndex: Mock = (config) => {
     resources: createItem(n),
     pager: createPaper(page),
     summary: {
-      income: 9900,
-      expenses: 9900,
-      balance: 0,
+      income: faker.datatype.number({ min: 100, max: 10000, precision: 0.1 }),
+      expenses: faker.datatype.number({ min: 100, max: 10000, precision: 0.1 }),
+      balance: faker.datatype.number({ precision: 1 }),
     },
   });
   if (!page || page === 1) {
