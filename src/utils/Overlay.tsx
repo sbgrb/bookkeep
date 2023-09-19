@@ -1,5 +1,5 @@
 import { PropType, defineComponent, onMounted, ref } from "vue";
-import { RouterLink, useRoute } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import { Icon } from "./Icon";
 import s from "./Overlay.module.scss";
 import { useMeStore } from "../stores/useMeStore";
@@ -17,6 +17,7 @@ export const Overlay = defineComponent({
       props.onClose?.();
     };
     const route = useRoute();
+    const router = useRouter();
     const me = ref<User>();
     onMounted(async () => {
       const response = await meStore.mePromise;
@@ -28,7 +29,8 @@ export const Overlay = defineComponent({
         message: "你真的要退出登录吗？",
       });
       localStorage.removeItem("jwt");
-      window.location.reload();
+      router.replace(`/sign_in`);
+      // window.location.reload();
     };
     return () => (
       <>
