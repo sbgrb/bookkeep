@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "@faker-js/faker": "7.3.0",
-    "axios": "^1.5.0",
-    "echarts": "^5.4.3",
+    "axios": "1.5.0",
+    "echarts": "5.4.3",
     "pinia": "2.0.6",
-    "sass": "^1.64.2",
-    "vant": "^4.6.6",
+    "sass": "1.64.2",
+    "vant": "4.6.6",
     "vue": "3.2.31",
     "vue-router": "4.0.14"
   },

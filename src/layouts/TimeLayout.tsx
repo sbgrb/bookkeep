@@ -72,7 +72,7 @@ export const TimeLayout = defineComponent({
     return () => (
       <MainLayout>
         {{
-          title: () => "山竹记账",
+          title: () => "记账",
           icon: () => <OverlayIcon />,
           default: () => (
             <>

@@ -19,11 +19,11 @@ export default defineConfig({
       resolvers: [VantResolver()],
     }),
   ],
-  server: {
-    proxy: {
-      '/api/v1': {
-        target: 'http://121.196.236.94:3000/',
-      }
-    }
-  }
+  // server: {
+  //   proxy: {
+  //     '/api/v1': {
+  //       target: 'http://121.196.236.94:3000/',
+  //     }
+  //   }
+  // }
 })

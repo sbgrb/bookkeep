@@ -56,6 +56,9 @@ export const Charts = defineComponent({
     });
 
     const fetchData1 = async () => {
+      if (!props.startDate || !props.endDate) {
+        return;
+      }
       const response = await http.get<{ groups: Data1; summary: number }>(
         "/items/summary",
         {
@@ -93,6 +96,9 @@ export const Charts = defineComponent({
     });
 
     const fetchData2 = async () => {
+      if (!props.startDate || !props.endDate) {
+        return;
+      }
       const response = await http.get<{ groups: Data2; summary: number }>(
         "/items/summary",
         {
