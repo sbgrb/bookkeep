@@ -10,7 +10,7 @@ import { VantResolver } from "unplugin-vue-components/resolvers";
 export default defineConfig(({ command }) => {
   return {
     define:
-      command === "build"
+      command === "serve"
         ? {
             DEBUG: false,
           }
