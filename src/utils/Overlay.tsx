@@ -11,7 +11,7 @@ export const Overlay = defineComponent({
       type: Function as PropType<() => void>,
     },
   },
-  setup: (props, context) => {
+  setup: (props) => {
     const meStore = useMeStore();
     const close = () => {
       props.onClose?.();
@@ -30,7 +30,6 @@ export const Overlay = defineComponent({
       localStorage.removeItem("jwt");
       window.location.reload();
     };
-    const onClickSignIn = () => {};
     return () => (
       <>
         <div class={s.mask} onClick={close}></div>
@@ -50,6 +49,12 @@ export const Overlay = defineComponent({
           </section>
           <nav>
             <ul>
+              <li>
+                <RouterLink to="/items" class={s.action}>
+                  <Icon name="pig" class={s.icon} />
+                  <span>记账</span>
+                </RouterLink>
+              </li>
               <li>
                 <RouterLink to="/statistics" class={s.action}>
                   <Icon name="charts" class={s.icon} />
@@ -77,7 +82,7 @@ export const Overlay = defineComponent({
 });
 
 export const OverlayIcon = defineComponent({
-  setup: (props, context) => {
+  setup: () => {
     const refOverlayVisiable = ref(false);
     const onclick = () => {
       refOverlayVisiable.value = !refOverlayVisiable.value;

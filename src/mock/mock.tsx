@@ -193,8 +193,7 @@ export const mockUser: Mock = (config) => {
   return [
     200,
     {
-      email: faker.internet.email(),
-      id: createId(),
+      resource: { email: faker.internet.email(), id: createId() },
     },
   ];
 };
