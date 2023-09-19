@@ -8,3 +8,5 @@ export const TagPage = defineComponent({
         </div>
     }
 })
+
+export default TagPage

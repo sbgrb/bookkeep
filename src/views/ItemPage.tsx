@@ -8,3 +8,5 @@ export const ItemPage = defineComponent({
         )
     }
 })
+
+export default ItemPage

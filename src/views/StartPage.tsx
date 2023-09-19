@@ -32,3 +32,5 @@ export const StartPage = defineComponent({
             </MainLayout>
     }
 })
+
+export default StartPage
